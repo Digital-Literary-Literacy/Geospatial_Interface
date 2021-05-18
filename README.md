@@ -26,3 +26,5 @@ Locations for the spreadsheet were extracted using Stanford’s NER 3-class clas
 6.	Geo-code locations. Used EZ-Geocode an add-on in Google sheets that allows 250 queries per day.
 
 7.	Visualise in ArcGIS Developers account and create pop-ups in-browser for Trove and to To Be Continued website (code for website is titled ‘index.html’).
+
+Link to Google Drive documents: https://drive.google.com/drive/folders/1I5AJyH0H8X3U_g22YIG7DNs9GFztgxQM?usp=sharing
