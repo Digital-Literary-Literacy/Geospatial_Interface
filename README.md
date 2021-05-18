@@ -12,7 +12,7 @@ Locations for the spreadsheet were extracted using Stanford’s NER 3-class clas
 -	Mentions of place - something is said about the place other than the name (description, attitude, even if a couple of sentences)
 -	Doesn't have to be Australian places
 -	OCR - if terrible find out if there is another version or versions in different newspapers that are more legible 
- Link to spreadsheet located [here:](https://docs.google.com/spreadsheets/d/1QlcB-KCL9KMCscwADzRuUVFUPcx8nZQxmzw4ewB6DYc/edit?usp=sharing)
+ Link to spreadsheet located [here](https://docs.google.com/spreadsheets/d/1QlcB-KCL9KMCscwADzRuUVFUPcx8nZQxmzw4ewB6DYc/edit?usp=sharing)
  
 3. Create new spreadsheet in Google Docs of 28 narratives. Link to spreadsheet is located [here](https://docs.google.com/spreadsheets/d/1BzLDDcmqJpCiJQTilFPyhI-M_1yjStE4biZxAS18ifU/edit#gid=0)
 
@@ -23,7 +23,7 @@ Locations for the spreadsheet were extracted using Stanford’s NER 3-class clas
 
 5.	Develop extracts from narratives that mention placenames (see document [‘Extract_Rule’](https://drive.google.com/file/d/1e67yVzCA8W5rVbTY9O-6YQtAPRazXPEj/view?usp=sharing) and integrate into spreadsheet (extraction code included in repository)
 
-6.	Geo-code locations. Used EZ-Geocode an add-on in Google sheets that allows 250 queries per day.
+6.	Geo-code locations. Use EZ-Geocode an add-on in Google sheets that allows 250 queries per day.
 
 7.	Visualise in ArcGIS Developers account and create pop-ups in-browser for Trove and to To Be Continued website (code for website is titled ‘index.html’).
 
