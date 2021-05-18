@@ -8,10 +8,10 @@ Locations for the spreadsheet were extracted using Stanford’s NER 3-class clas
 
 2.	Compose CSV shortlist of 50 novels/novellas/short stories and assess each according to  quality of reference to ‘place’ and whether it is a feature of narrative, and also appropriateness of narratives for high school students. 
 **Criteria for selection is as follows:**
--	3000 words desirable - but just note the word length in your notes
+-	3000 words desirable 
 -	Mentions of place - something is said about the place other than the name (description, attitude, even if a couple of sentences)
 -	Doesn't have to be Australian places
--	OCR - if terrible find out if there is another version or versions in different newspapers that are more legible and substitute the URL
+-	OCR - if terrible find out if there is another version or versions in different newspapers that are more legible 
  Link to spreadsheet located [here:](https://docs.google.com/spreadsheets/d/1QlcB-KCL9KMCscwADzRuUVFUPcx8nZQxmzw4ewB6DYc/edit?usp=sharing)
  
 3. Create new spreadsheet in Google Docs of 28 narratives. Link to spreadsheet is located [here:](https://docs.google.com/spreadsheets/d/1BzLDDcmqJpCiJQTilFPyhI-M_1yjStE4biZxAS18ifU/edit#gid=0)
