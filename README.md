@@ -20,7 +20,7 @@ Locations for the spreadsheet were extracted using Stanford’s NER 3-class clas
 -	Correct OCR errors and spelling in extracts
 -	Create a column that links to bibliographic information about the author preferably http://adb.anu.edu.au/biography or Auslit if this is not available. 
  
-5.	Develop extracts from narratives that mention placenames (see document ‘Extract_Rule’) and integrate into spreadsheet (extraction code included in repository)
+5.	Develop extracts from narratives that mention placenames (see document ‘Extract_Rule’ https://drive.google.com/file/d/1e67yVzCA8W5rVbTY9O-6YQtAPRazXPEj/view?usp=sharing) and integrate into spreadsheet (extraction code included in repository)
 
 6.	Geo-code locations. Used EZ-Geocode an add-on in Google sheets that allows 250 queries per day.
 
