@@ -1,0 +1,425 @@
+<!DOCTYPE html PUBLIC>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+
+    <title>Map</title>
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.18/esri/themes/dark-blue/main.css"
+    />
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(50, 50, 50);
+      }
+      #infoDiv {
+        padding: 10px;
+      }
+      .esri-popup__main-container {
+        max-height: 100%;
+      }
+      .esri-popup__feature-menu,
+      .esri-popup__feature-menu-list {
+        max-height: 600px;
+      }
+      .esri-popup--feature-menu-open .esri-popup__feature-menu-viewport {
+        max-height: 100%;
+      }
+      .esri-popup__header-title{
+        margin: auto;
+      }
+      .esri-feature-media__item-caption {
+        font-size: 14px;
+      }
+      /*.esri-popup--feature-menu-open.esri-popup__feature-menu{max-height:100%;height:100%;}*/
+    </style>
+
+    <script src="https://js.arcgis.com/4.18/"></script>
+
+    <script>
+      require([
+        "esri/Map",
+        "esri/Graphic",
+        "esri/layers/FeatureLayer",
+        "esri/layers/GeoJSONLayer",
+        "esri/views/MapView",
+        "esri/widgets/Legend",
+        "esri/widgets/Expand",
+        "esri/widgets/Home"
+      ], function (
+        Map,
+        Graphic,
+        FeatureLayer,
+        GeoJSONLayer,
+        MapView,
+        Legend,
+        Expand,
+        Home
+      ) {
+        let layerView;
+        // Configures clustering on the layer. A cluster radius
+        // of 100px indicates an area comprising screen space 100px
+        // in length from the center of the cluster
+        const clusterConfig = {
+          type: "cluster",
+          clusterRadius: "400px",
+          // {cluster_count} is an aggregate field containing
+          // the number of features comprised by the cluster
+          popupTemplate: {
+            content: "This cluster represents {cluster_count} places."
+            //   fieldInfos: [
+            //     {
+            //       fieldName: "cluster_count",
+            //       format: {
+            //         places: 0,
+            //         digitSeparator: true
+            //       }
+            //     }
+            //   ]
+          },
+          clusterMinSize: "24px",
+          clusterMaxSize: "60px",
+          labelingInfo: [
+            {
+              deconflictionStrategy: "none",
+              labelExpressionInfo: {
+                expression: "Text($feature.cluster_count, '#,###')"
+              },
+              symbol: {
+                type: "text",
+                color: "#004a5d",
+                font: {
+                  weight: "bold",
+                  family: "Noto Sans",
+
+                  size: "12px"
+                }
+              },
+              labelPlacement: "center-center"
+            }
+          ]
+        };
+
+        const layer = new FeatureLayer({
+          url:
+            "https://services6.arcgis.com/wNUCgbZ3TmLukLnT/arcgis/rest/services/Geospatial_Interface - Sheet1/FeatureServer",
+          featureReduction: clusterConfig,
+          // outFields: ["Placename","Latitude","Longitude","Author"],
+          outFields: ["*"],
+          // popupTemplates can still be viewed on
+          // individual features
+          popupTemplate: {
+            title: "{Common_Title}",
+            content:
+          
+              function (feature) {
+                var Extraction = feature.graphic.attributes.Extraction;
+                var Author = feature.graphic.attributes.Author;
+                var Go_to_Chapter = feature.graphic.attributes.Go_to_Chapter;
+                var Go_to_Story = feature.graphic.attributes.Go_to_Story;
+                var Read_About_the_Author =
+                  feature.graphic.attributes.Read_About_the_Author;
+                var Placename =
+                  feature.graphic.attributes.Placename;
+                var Date_=feature.graphic.attributes.Date;
+                var div = document.createElement("div");
+                div.className = "esri-feature-content";
+                div.innerHTML = `<b>${Placename}</b><br/>${Extraction}<br/><br/><p><b>--${Author}</b><br><b>${Date_}</b></p><a href="javascript:window.open('${Go_to_Chapter}','popUpWindow','height=900,width=500');">Go to Chapter</a><br><a id="new_window" href="javascript:window.open('${Read_About_the_Author}','popUpWindow','height=900,width=500');" >Read about the author</a><br>
+             <a href="javascript:window.open('${Go_to_Story}','popUpWindow','height=900,width=500');">Go to Story</a>`;
+                return div;
+              }
+            //   `{Extraction}<br/><br/><p><b>--{Author}</b></p><a href="{Go_to_Chapter}">Go to Chapter</a><br><a id="new_window" href="window.open('http://www.google.com','_blank');" >Read1 about the author</a><br>
+            // <a href="{Go_to_Story}">Go to Story</a>`
+          },
+          renderer: {
+            type: "simple",
+            field: "mag",
+            symbol: {
+              type: "simple-marker",
+              size: 15,
+              color: "#69dcff",
+              outline: {
+                color: "rgba(0, 139, 174, 0.5)",
+                width: 5
+              }
+            }
+          }
+        });
+
+        const map = new Map({
+          basemap: "gray",
+          layers: [layer]
+        });
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          popup: {
+            dockEnabled: true,
+            dockOptions: {
+              // Disables the dock button from the popup
+              buttonEnabled: false,
+              // Ignore the default sizes that trigger responsive docking
+              breakpoint: false,
+              position: "top-right"
+            }
+          },
+          center: [181, 23], // longitude, latitude
+          zoom: 3
+        });
+
+        view.ui.add(
+          new Home({
+            view: view
+          }),
+          "top-left"
+        );
+        layer
+          .when()
+          .then(async (featureReduction) => {
+            layerView = await view.whenLayerView(layer);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+
+        view.popup.watch("selectedFeature", function (graphic) {
+          if (graphic) {
+            view.popup.visible = false;
+            if (view.popup.selectedFeature.isAggregate) {
+              var query = layerView.createQuery();
+              query.aggregateIds = [graphic.getObjectId()];
+              query.groupByFieldsForStatistics = ["Longitude", "Latitude"];
+              query.outFields = ["Placename", "Longitude", "Latitude"];
+              query.outStatistics = [
+                {
+                  onStatisticField: "1",
+                  outStatisticFieldName: "num_features",
+                  statisticType: "count"
+                }
+              ];
+              layerView.queryFeatures(query).then(function (response) {
+                if (
+                  response.features[0].attributes["num_features"] !=
+                  view.popup.selectedFeature.attributes["cluster_count"]
+                ) {
+                  view.popup.triggerAction(0); //This calls the popup Zoom To action
+                } else {
+                  var gs = new Map();
+
+                  var query1 = layerView.createQuery();
+                  query1.aggregateIds = [graphic.getObjectId()];
+                  query.groupByFieldsForStatistics = ["Common_Title"];
+                  query.outFields = [
+                    "Common_Title",
+                    "Extraction",
+                    "Read_About_the_Author",
+                    "Go_to_Story",
+                    "Go_to_Chapter"
+                  ];
+                  layerView.queryFeatures(query).then(function (r) {
+                    var g;
+                    for (g of r.features) {
+                      gs[g.attributes["Common_Title"]] = new Graphic({
+                        attributes: {
+                          Common_Title: g.attributes["Common_Title"]
+                        },
+                        popupTemplate: {
+                          title: g.attributes["Common_Title"],
+                          content: [
+                            {
+                              type: "media", // MediaContentElement
+                              mediaInfos: [
+                                //
+                              ]
+                            },
+                            {
+                              type: "custom",
+                              creator: ""
+                              //   `<a href="javascript:poptastic('` +
+                              //   g.attributes["Read_About_the_Author"] +
+                              //   `');">Read about the author</a><br>
+                              // <a href="` +
+                              //   g.attributes["Go_to_Story"] +
+                              //   `">Read this book</a>`
+                            }
+                          ]
+                        }
+                      });
+                    }
+                  });
+                  layerView.queryFeatures(query1).then(function (res) {
+                    // view.popup.features = res.features;
+                    // console.log(res.features[0]);
+                    var g1;
+                    for (g1 of res.features) {
+                      var title = g1.attributes["Common_Title"];
+                      // gs[title]=gs[title].popupTemplate['content']
+                      // console.log(g1.popupTemplate);
+                      gs[title].popupTemplate["content"][1][
+                        "creator"
+                      ] = output_dom(g1);
+                      gs[title].popupTemplate["content"][0]["mediaInfos"].push({
+                        caption:
+                          `<b>`+g1.attributes["Placename"]+`<br></b>`+
+                          g1.attributes["Extraction"] +
+                          `<br/><br/><p><b>--` +
+                          g1.attributes["Author"] +
+                          `</b><br><b>`+g1.attributes["Date"]+`</b></p>` +
+                          `<div class="esri-feature-content"><a class="test" href="` +
+                          g1.attributes["Go_to_Chapter"] +
+                          `" target="_blank" >Go to Chapter</a><br></div>`,
+                        //<a href="javascript:window.open('${Go_to_Chapter}','popUpWindow','height=900,width=500');">Go to Chapter</a><br>
+                        value: {
+                          sourceURL:
+                            "https://litmapaus.unimelb.edu.au/img.png"
+                        }
+                      });
+                    }
+                    var gs_values = Object.values(gs);
+                    gs_values.shift();
+                    gs_values.shift();
+
+                    view.popup.open({
+                      // features: res.features, // array of graphics
+                      features: gs_values,
+                      featureMenuOpen: true // selected features initially display in a list
+                    });
+                    // console.log(res.features);
+                  });
+                  //                   let fr = layer.featureReduction;
+                  // layer.featureReduction =
+                  //   fr && fr.type === "cluster" ? null : clusterConfig;
+
+                  view.popup.visible = true;
+                  // console.log("d");
+
+                  // layer.featureReduction.featureReduction=clusterConfig1;
+                  //todo: configure popup
+                }
+              });
+            } else {
+              view.popup.visible = true;
+            }
+          }
+        });
+        document.onclick = function () {
+          setTimeout(function () {
+            var test = document.getElementsByClassName("test");
+            var i;
+            for (i = 0; i < test.length; i++) {
+              test[i].href= `javascript:window.open('`+test[i].href+`','popUpWindow','height=900,width=500');`;
+              test[i].target="";
+            }
+          }, 100);
+        };
+
+        view.popup.on("click", function (event) {
+          // event is the event handle returned after the event fires.
+        });
+        //         view.popup.on("click", function (event) {
+        //   console.log("click");
+        //   //
+        // });
+        function output_dom(g1) {
+          // var Extraction= feature.graphic.attributes.Extraction;
+          // var Author = feature.graphic.attributes.Author;
+          var Go_to_Chapter = g1.attributes.Go_to_Chapter;
+          var Go_to_Story = g1.attributes.Go_to_Story;
+          var Read_About_the_Author = g1.attributes.Read_About_the_Author;
+          var div = document.createElement("div");
+          div.className = "esri-feature-content";
+          div.innerHTML = `<a id="new_window" href="javascript:window.open('${Read_About_the_Author}','popUpWindow','height=900,width=500');" >Read about the author</a><br>
+             <a href="javascript:window.open('${Go_to_Story}','popUpWindow','height=900,width=500');">Go to Story</a>`;
+          return div;
+        }
+        let selectedFeatureHandle = null;
+        let selectedFeature = null;
+        let selectedClusterFeature = null;
+
+        // Clear view graphics and popup when cluster is no longer selected
+        // or when the scale changes. This needs to happen because clusters
+        // regenerate at each scale level, so the popup would no longer represents
+        // a valid cluster if it were to persist.
+        watchUtils.whenFalse(view.popup, "visible", clear);
+        watchUtils.whenDefined(view.popup, "selectedFeature", (newFeature) => {
+          if (selectedClusterFeature?.isAggregate && newFeature?.isAggregate) {
+            clear();
+          }
+          if (newFeature?.isAggregate) {
+            selectedClusterFeature = newFeature;
+          }
+        });
+        watchUtils.watch(view, "scale", () => {
+          clear();
+          view.popup.close();
+        });
+
+        function clear() {
+          view.popup.features = view.popup.features.filter(
+            (feature) => feature.isAggregate
+          );
+          view.graphics.removeAll();
+          if (selectedFeatureHandle) {
+            selectedFeatureHandle.remove();
+            selectedFeatureHandle = null;
+            selectedFeature = null;
+          }
+        }
+
+        const legend = new Legend({
+          view: view,
+          container: "legendDiv"
+        });
+
+        const infoDiv = document.getElementById("infoDiv");
+        view.ui.add(
+          new Expand({
+            view: view,
+            content: infoDiv,
+            expandIconClass: "esri-icon-layer-list",
+            expanded: false
+          }),
+          "top-left"
+        );
+        var newwindow;
+        function poptastic(url) {
+          newwindow = window.open(url, "name", "height=400,width=200");
+          if (window.focus) {
+            newwindow.focus();
+          }
+        }
+        const toggleButton = document.getElementById("cluster");
+        // To turn off clustering on a layer, set the
+        // featureReduction property to null
+        toggleButton.addEventListener("click", function () {
+          let fr = layer.featureReduction;
+          layer.featureReduction =
+            fr && fr.type === "cluster" ? null : clusterConfig;
+          toggleButton.innerText =
+            toggleButton.innerText === "Enable Clustering"
+              ? "Disable Clustering"
+              : "Enable Clustering";
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+    <div id="infoDiv" class="esri-widget">
+      <!--<button id="cluster" class="esri-button">Disable Clustering</button>-->
+      <div id="legendDiv"></div>
+    </div>
+  </body>
+</html>
