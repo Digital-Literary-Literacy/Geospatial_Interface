@@ -3,7 +3,7 @@ https://litmapaus.unimelb.edu.au
 Code, documentation and instruction pertaining to construction of geospatial interface. 
 
 1.	Choose stories based on frequency of placename mentions across entire novel. Shortlist was developed from analysis of highest frequency of mentions in novels/novellas/short stories written by Australian authors. 
-CSV located [here:] (https://drive.google.com/file/d/1v6TAWA7GNr0Dvm6ijvH5-MsBhq9g6eZh/view?usp=sharing)
+CSV located [here:](https://drive.google.com/file/d/1v6TAWA7GNr0Dvm6ijvH5-MsBhq9g6eZh/view?usp=sharing)
 Locations for the spreadsheet were extracted using Stanford’s NER 3-class classifier (Code in folder ‘Test_Stanford_NER.py’)
 
 2.	Compose CSV shortlist of 50 novels/novellas/short stories and assess each according to  quality of reference to ‘place’ and whether it is a feature of narrative, and also appropriateness of narratives for high school students. Criteria for selection is as follows:
