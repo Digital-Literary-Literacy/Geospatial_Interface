@@ -14,7 +14,7 @@ Locations for the spreadsheet were extracted using Stanford’s NER 3-class clas
 -	OCR - if terrible find out if there is another version or versions in different newspapers that are more legible 
  Link to spreadsheet located [here:](https://docs.google.com/spreadsheets/d/1QlcB-KCL9KMCscwADzRuUVFUPcx8nZQxmzw4ewB6DYc/edit?usp=sharing)
  
-3. Create new spreadsheet in Google Docs of 28 narratives. Link to spreadsheet is located [here:](https://docs.google.com/spreadsheets/d/1BzLDDcmqJpCiJQTilFPyhI-M_1yjStE4biZxAS18ifU/edit#gid=0)
+3. Create new spreadsheet in Google Docs of 28 narratives. Link to spreadsheet is located [here](https://docs.google.com/spreadsheets/d/1BzLDDcmqJpCiJQTilFPyhI-M_1yjStE4biZxAS18ifU/edit#gid=0)
 
 4. Manual cleaning of placenames and extracts:
 -	Identify false positives in placenames eg. ‘Miss’ or ‘French.’ Remove these rows
