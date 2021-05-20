@@ -22,7 +22,7 @@ classified_text = st.tag(tokenized_text)
 
 locations = []
 
-# Code will go through all text files in the directory and pull out all LOCATIONS and add them to a csv
+# Code will go through all text files in the directory and create an individual csv for each text file
 for i in classified_text:
     if i[1] == "LOCATION": # Can replace Location with, Person etc. dependent on classifier.
         locations.append(i)
